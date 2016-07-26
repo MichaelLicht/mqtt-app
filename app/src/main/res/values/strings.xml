@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Startseite -->
+    <string name="txt_activity_main_ueberschrift">
+        SSP MQTT Connect
+    </string>
+    <!-- Schaltflächentexte -->
+    <string name="sf_connect">Connect to broker</string>
+    <string name="sf_disconnect">Disconnect from broker</string>
+    <string name="sf_subscribe">Subscribe topic</string>
+    <string name="sf_unsubscribe">Unsubscribe topic</string>
+    <!-- Optionen -->
+    <string name="txt_brokerURL">tcp://</string>
+    <string name="txt_clientId">Client ID</string>
+    <string name="txt_topic">http://127.0.0.1:8080/thermometer1.ttl</string>
+    <!-- Ergebnis -->
+    <string name="txt_ergebnis">Ergebnis</string>
+</resources>
