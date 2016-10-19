@@ -12,7 +12,7 @@
     <string name="sf_subscribe">Subscribe topic</string>
     <string name="sf_unsubscribe">Unsubscribe topic</string>
     <!-- Optionen -->
-    <string name="txt_brokerURL">tcp://</string>
+    <string name="txt_brokerURL">tcp://141.83.157.54</string>
     <string name="txt_clientId">Client ID</string>
     <string name="txt_topic">http://127.0.0.1:8080/thermometer1.ttl</string>
     <!-- Ergebnis -->

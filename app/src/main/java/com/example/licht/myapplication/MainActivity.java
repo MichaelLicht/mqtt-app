@@ -13,10 +13,17 @@ import android.widget.EditText;
 import android.app.AlertDialog;
 import android.widget.TextView;
 
+import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+import org.eclipse.paho.android.service.MqttService;
 
 public class MainActivity extends AppCompatActivity implements MqttCallback{
+
+    MqttClient mqttClient = null;
+    String url = null;
+    String cntId = null;
+    String top = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,11 +69,9 @@ public class MainActivity extends AppCompatActivity implements MqttCallback{
         // TODO
         // Auslesen der Textboxen und setzen der Variablen
         EditText broker = (EditText)findViewById(R.id.txt_broker_url);
-        String url = broker.getText().toString();
+        url = broker.getText().toString();
         EditText clientId = (EditText)findViewById(R.id.txt_clientId);
-        String cntId = clientId.getText().toString();
-        EditText topic = (EditText)findViewById(R.id.txt_topic);
-        String top = topic.getText().toString();
+        cntId = clientId.getText().toString();
         // Popup bei OnClick
         //AlertDialog.Builder builder = new AlertDialog.Builder(this);
         //builder.setTitle("Message")
@@ -81,10 +86,9 @@ public class MainActivity extends AppCompatActivity implements MqttCallback{
 
         try {
             MemoryPersistence per = new MemoryPersistence();
-            MqttClient mqttClient = new MqttClient(url, cntId, per);
+            mqttClient = new MqttClient(url, cntId, per);
             mqttClient.setCallback(this);
             mqttClient.connect(options);
-            mqttClient.subscribe(top);
             //MqttMessage mqM = new MqttMessage();
             //mqM.setPayload("Kuchen".getBytes());
             //mqttClient.publish("kekse", mqM);
@@ -97,8 +101,30 @@ public class MainActivity extends AppCompatActivity implements MqttCallback{
 
     public void onClickSubscribe(final View sfNormal){
         // TODO
-        // mqttClient.subscribe(top); siehe connect
+        EditText topic = (EditText)findViewById(R.id.txt_topic);
+        top = topic.getText().toString();
+
+        try {
+            mqttClient.subscribe(top);
+
+        } catch (MqttException mq) {
+            mq.printStackTrace();
+        }
+
     }
+
+    public void onClickUnsubscribe(final View sfNormal){
+        // TODO
+        EditText topic = (EditText)findViewById(R.id.txt_topic);
+        top = topic.getText().toString();
+
+        try {
+            mqttClient.unsubscribe(top);
+        } catch (MqttException mq) {
+            mq.printStackTrace();
+        }
+    }
+
     @Override
     public void connectionLost(Throwable cause) {
         // TODO Auto-generated method stub
@@ -108,7 +134,8 @@ public class MainActivity extends AppCompatActivity implements MqttCallback{
     @Override
     public void messageArrived(final String topic, MqttMessage message)
             throws Exception {
-        final String str = message.toString();
+        // komisches herausfinden der temperatur anhand von index abzählen
+        final String str = message.toString().substring(message.toString().indexOf("hasValue")+9, message.toString().indexOf("hasValue")+12);
         final Context context = this;
         runOnUiThread(new Runnable() {
             @Override
